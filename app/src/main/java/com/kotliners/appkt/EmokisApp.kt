@@ -134,6 +134,7 @@ class DataViewModel : ViewModel() {
         _emokis.add(Emoki(emoki))
     }
 
+    @Suppress("UNCHECKED_CAST")
     class DataViewModelFactory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return DataViewModel() as T
