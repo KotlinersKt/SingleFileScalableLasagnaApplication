@@ -1,0 +1,38 @@
+name: Dev Workflow for Single PR
+
+on:
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build-single-debug-app:
+    name: Build the amazing Emokis App in debug mode
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone the WHOLE PROJECT
+      uses: actions/checkout@v2
+
+    - name: Setup the JDK8 for our loved Kotlin
+      uses: actions/setup-java@v1 
+      with:
+        java-version: 8
+
+    - uses: actions/cache@v2
+      with: 
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
+    - name: Build Emokis based on SFSLA
+      run: ./gradlew assembleDebug
+
+    - name: Upload the app to github
+      uses: actions/upload-artifact@v2
+      with:
+        name: Emokis-latest
+        path: ./app/build/outputs/apk/debug
