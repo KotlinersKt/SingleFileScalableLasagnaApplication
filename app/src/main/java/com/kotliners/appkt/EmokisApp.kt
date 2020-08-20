@@ -22,17 +22,16 @@ import kotlin.properties.Delegates
 ///////////////////////// ACTIVITY START
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseActivity<in BINDING : ViewBinding> : AppCompatActivity() {
-    abstract val binding: ViewBinding
+abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
+    abstract val binding: BINDING
 
-    abstract fun onBinding(): BINDING.() -> Unit
+    abstract val onBinding: BINDING.() -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(binding) {
             setContentView(root)
-            val b = onBinding()
-            b.invoke(binding as BINDING)
+            onBinding()
         }
     }
 
@@ -54,7 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         EmokisSingleton.owner = this@MainActivity
     }
 
-    override fun onBinding(): ActivityMainBinding.() -> Unit = {
+    override val onBinding: ActivityMainBinding.() -> Unit = {
         toolbarApp.title = getString(R.string.emoki)
         setSupportActionBar(toolbarApp)
         btnSaveEmoki.setOnClickListener {
@@ -96,7 +95,7 @@ class EmokisActivity : BaseActivity<ActivityEmokisBinding>() {
         }
     }
 
-    override fun onBinding(): ActivityEmokisBinding.() -> Unit = {
+    override val onBinding: ActivityEmokisBinding.() -> Unit = {
 
         rcEmokis.layoutManager = LinearLayoutManager(this@EmokisActivity)
         rcEmokis.adapter = adapter
@@ -135,6 +134,7 @@ class DataViewModel : ViewModel() {
         _emokis.add(Emoki(emoki))
     }
 
+    @Suppress("UNCHECKED_CAST")
     class DataViewModelFactory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return DataViewModel() as T
