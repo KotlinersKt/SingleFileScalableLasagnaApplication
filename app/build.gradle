@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.dokka'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.kotliners.appkt"
+        applicationId "com.kotliners.emokiapp"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -27,6 +28,15 @@ android {
         viewBinding = true
     }
 
+}
+
+dokkaHtml {
+    dokkaSourceSets {
+        create("main") {
+            noAndroidSdkLink = false
+        }
+//        samples = [""]
+    }
 }
 
 dependencies {

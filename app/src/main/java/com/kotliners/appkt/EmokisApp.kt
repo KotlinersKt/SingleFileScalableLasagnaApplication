@@ -21,10 +21,43 @@ import kotlin.properties.Delegates
 
 ///////////////////////// ACTIVITY START
 
+
+internal class GorroActivity : BaseActivity<ActivityMainBinding>() {
+    override val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    override val onBinding: ActivityMainBinding.() -> Unit = {}
+}
+
+/**
+ * Descripción corta
+ *
+ * Esta es una descripción mas completa que ya no es el título
+ *
+ * **Esta clase es la base de nuestras actividades...en letras negritas**
+ *
+ * @author KotlinersKT
+ * @since 1.0.0
+ * @param BINDING es un super genérico subclase de [androidx.viewbinding.ViewBinding] Vinculación de Vista
+ *
+ * @see [androidx.viewbinding.ViewBinding]
+ *
+ * @sample [com.kotliners.appkt.GorroActivity]
+ * @sample [com.kotliners.appkt.EmokisActivity]
+ */
 @Suppress("UNCHECKED_CAST")
 abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
+
+    /**
+     * Es la referencia del objeto generado por la libreria de [Vinculación de vista](https://developer.android.com/topic/libraries/view-binding?hl=es-419)
+     */
     abstract val binding: BINDING
 
+    /**
+     * Es el metodo donde puedes acceder a las vistas del objecto ViewBinding y
+     * configurarlos
+     */
     abstract val onBinding: BINDING.() -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +77,10 @@ abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
+    /**
+     *
+     * @see [com.kotliners.appkt.databinding.ActivityMainBinding]
+     */
     override val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -190,7 +227,11 @@ inline fun <reified T> FragmentActivity.launchActivity(block: Intent.() -> Unit 
     startActivity(intent)
 }
 
-fun ViewGroup.inflateFrom() =
+/**
+ *
+ * @return [ItemEmokiBinding]
+ */
+fun ViewGroup.inflateFrom(): ItemEmokiBinding =
     ItemEmokiBinding.inflate(LayoutInflater.from(this.context))
 
 private fun ViewBinding.kill() {
