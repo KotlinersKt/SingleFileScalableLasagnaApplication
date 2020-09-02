@@ -64,6 +64,8 @@ abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
      */
     abstract val onBinding: BINDING.() -> Unit
 
+    protected val emokisSingleton: EmokisSingleton by injektor.injekt()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(binding) {
@@ -89,20 +91,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      *
      * @see [com.kotliners.appkt.databinding.ActivityMainBinding]
      */
-    override val binding by lazy {
+    override
+    val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    val emoki: Emoki by injektor.injekt()
+
     override fun onStart() {
         super.onStart()
-        EmokisSingleton.owner = this@MainActivity
+        emokisSingleton.owner = this@MainActivity
     }
 
     override val onBinding: ActivityMainBinding.() -> Unit = {
         toolbarApp.title = getString(R.string.emoki)
         setSupportActionBar(toolbarApp)
+        edtxtEmoki.setText(emoki.emoki)
         btnSaveEmoki.setOnClickListener {
-            EmokisSingleton.viewModel?.saveEmoki(edtxtEmoki.text.toString())
+            emokisSingleton.viewModel?.saveEmoki(edtxtEmoki.text.toString())
         }
     }
 
@@ -135,7 +141,7 @@ class EmokisActivity : BaseActivity<ActivityEmokisBinding>() {
 
     override fun onStart() {
         super.onStart()
-        EmokisSingleton.viewModel?.emokis?.let {
+        emokisSingleton.viewModel?.emokis?.let {
             adapter.data = it
         }
     }
@@ -260,3 +266,43 @@ private fun ViewBinding.kill() {
 }
 
 ///////////////////////// EXTENSION FUNCTIONS END
+
+///////////////////////// DEPENDENCY INYECTION START
+
+
+class ElContenedor {
+
+    val dependenkies = mutableMapOf<String, Any>()
+
+}
+
+class Inllector private constructor() {
+
+    val elContenedor = ElContenedor()
+
+    inline fun <reified T> injekt(): Lazy<T> {
+        return lazyOf(elContenedor.dependenkies[T::class.java.simpleName] as T)
+    }
+
+    companion object {
+        val inllektor = Inllector()
+        inline fun <reified E : Any> inllektorOf(vararg deks: E): Inllector {
+            for (dek in deks) {
+                inllektor.elContenedor.dependenkies[dek::class.java.simpleName] = dek
+            }
+            return inllektor
+        }
+
+        inline fun <reified R : Any> registerDeks(dek: R) {
+            inllektor.elContenedor.dependenkies[dek::class.java.simpleName] = dek
+        }
+    }
+
+}
+
+private val inllektor = Inllector.inllektorOf(EmokisSingleton, Emoki("🙄"), "Chuby")
+val FragmentActivity.injektor: Inllector
+    get() = inllektor
+
+///////////////////////// DEPENDENCY INYECTION END
+
