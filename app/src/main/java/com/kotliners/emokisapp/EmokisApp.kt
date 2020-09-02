@@ -1,4 +1,4 @@
-package com.kotliners.appkt
+package com.kotliners.emokisapp
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -17,9 +17,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.kotliners.appkt.databinding.ActivityEmokisBinding
-import com.kotliners.appkt.databinding.ActivityMainBinding
-import com.kotliners.appkt.databinding.ItemEmokiBinding
+import com.kotliners.emokisapp.databinding.ActivityEmokisBinding
+import com.kotliners.emokisapp.databinding.ActivityMainBinding
+import com.kotliners.emokisapp.databinding.ItemEmokiBinding
 import kotlin.properties.Delegates
 
 
@@ -47,8 +47,8 @@ internal class GorroActivity : BaseActivity<ActivityMainBinding>() {
  *
  * @see [androidx.viewbinding.ViewBinding]
  *
- * @sample [com.kotliners.appkt.GorroActivity]
- * @sample [com.kotliners.appkt.EmokisActivity]
+ * @sample [com.kotliners.emokisapp.GorroActivity]
+ * @sample [com.kotliners.emokisapp.EmokisActivity]
  */
 @Suppress("UNCHECKED_CAST")
 abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
@@ -89,7 +89,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     /**
      *
-     * @see [com.kotliners.appkt.databinding.ActivityMainBinding]
+     * @see [com.kotliners.emokisapp.databinding.ActivityMainBinding]
      */
     override
     val binding by lazy {

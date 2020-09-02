@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.kotliners.emokiapp"
+        applicationId "com.kotliners.emokisapp"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
