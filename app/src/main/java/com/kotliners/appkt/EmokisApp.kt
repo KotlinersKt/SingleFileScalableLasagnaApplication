@@ -1,11 +1,15 @@
 package com.kotliners.appkt
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -68,6 +72,10 @@ abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
         }
     }
 
+    fun showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, message, length).show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding.kill()
@@ -122,7 +130,7 @@ class EmokisActivity : BaseActivity<ActivityEmokisBinding>() {
     }
 
     private val adapter by lazy {
-        EmokiAdapter()
+        EmokiAdapter(this::onClicktem)
     }
 
     override fun onStart() {
@@ -136,6 +144,13 @@ class EmokisActivity : BaseActivity<ActivityEmokisBinding>() {
 
         rcEmokis.layoutManager = LinearLayoutManager(this@EmokisActivity)
         rcEmokis.adapter = adapter
+    }
+
+    fun onClicktem(emoki: Emoki) {
+        val clipBoard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("EmokiApp", emoki.emoki)
+        clipBoard.setPrimaryClip(clip)
+        showToast("Emoki copeaaaaado a klipboard :D")
     }
 
 }
@@ -184,8 +199,10 @@ class DataViewModel : ViewModel() {
 
 
 ///////////////////////// ADAPTER START
+typealias EmokiClickListener = (Emoki) -> Unit
 
-class EmokiAdapter : RecyclerView.Adapter<EmokiAdapter.ViewHolder>() {
+class EmokiAdapter(private val onClickItem: EmokiClickListener) :
+    RecyclerView.Adapter<EmokiAdapter.ViewHolder>() {
 
     var data by Delegates.observable(listOf<Emoki>()) { _, old, newList ->
         old + newList
@@ -194,7 +211,7 @@ class EmokiAdapter : RecyclerView.Adapter<EmokiAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflated = parent.inflateFrom()
-        return ViewHolder(inflated)
+        return ViewHolder(inflated, onClickItem)
     }
 
     override fun getItemCount(): Int = data.size
@@ -203,9 +220,13 @@ class EmokiAdapter : RecyclerView.Adapter<EmokiAdapter.ViewHolder>() {
         holder.bind(data[position])
     }
 
-    class ViewHolder(private val binding: ItemEmokiBinding) :
+    class ViewHolder(
+        private val binding: ItemEmokiBinding,
+        private val emokiClickListener: EmokiClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(emoki: Emoki) = with(binding) {
+            itemView.setOnClickListener { emokiClickListener(emoki) }
             txtItemEmoki.text = emoki.emoki
         }
     }
