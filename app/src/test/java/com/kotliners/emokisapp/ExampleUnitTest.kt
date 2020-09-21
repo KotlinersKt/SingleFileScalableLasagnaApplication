@@ -1,4 +1,4 @@
-package com.kotliners.appkt
+package com.kotliners.emokisapp
 
 import org.junit.Test
 

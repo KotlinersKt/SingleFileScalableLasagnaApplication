@@ -1,4 +1,4 @@
-package com.kotliners.appkt
+package com.kotliners.emokisapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.kotliners.appkt", appContext.packageName)
+        assertEquals("com.kotliners.emokisapp", appContext.packageName)
     }
 }

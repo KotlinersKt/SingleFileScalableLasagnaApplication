@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-android-extensions")
+    id("org.jetbrains.dokka")
 }
 
 android {
@@ -40,6 +41,16 @@ android {
         jvmTarget = "1.8"
     }
 
+}
+
+tasks {
+    dokkaHtml {
+        dokkaSourceSets {
+            create("main") {
+                noAndroidSdkLink = false
+            }
+        }
+    }
 }
 
 dependencies {
