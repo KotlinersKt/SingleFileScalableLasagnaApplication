@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -78,6 +79,8 @@ abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
         Toast.makeText(this, message, length).show()
     }
 
+    fun showToast(@StringRes messageId: Int) = showToast(getString(messageId))
+
     override fun onDestroy() {
         super.onDestroy()
         binding.kill()
@@ -108,6 +111,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setSupportActionBar(toolbarApp)
         edtxtEmoki.setText(emoki.emoki)
         btnSaveEmoki.setOnClickListener {
+            showToast(R.string.saved_emoki)
             emokisSingleton.viewModel?.saveEmoki(edtxtEmoki.text.toString())
         }
     }
