@@ -22,9 +22,7 @@ import com.kotliners.emokisapp.databinding.ActivityMainBinding
 import com.kotliners.emokisapp.databinding.ItemEmokiBinding
 import kotlin.properties.Delegates
 
-
-///////////////////////// ACTIVITY START
-
+// /////////////////////// ACTIVITY START
 
 internal class GorroActivity : BaseActivity<ActivityMainBinding>() {
     override val binding by lazy {
@@ -74,7 +72,10 @@ abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
         }
     }
 
-    fun showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
+    fun showToast(
+        message: String,
+        length: Int = Toast.LENGTH_SHORT
+    ) {
         Toast.makeText(this, message, length).show()
     }
 
@@ -82,7 +83,6 @@ abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity() {
         super.onDestroy()
         binding.kill()
     }
-
 }
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -91,8 +91,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      *
      * @see [com.kotliners.emokisapp.databinding.ActivityMainBinding]
      */
-    override
-    val binding by lazy {
+    override val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
@@ -125,8 +124,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }
 
 class EmokisActivity : BaseActivity<ActivityEmokisBinding>() {
@@ -158,12 +155,11 @@ class EmokisActivity : BaseActivity<ActivityEmokisBinding>() {
         clipBoard.setPrimaryClip(clip)
         showToast("Emoki copeaaaaado a klipboard :D")
     }
-
 }
 
-///////////////////////// ACTIVITY END
+// /////////////////////// ACTIVITY END
 
-///////////////////////// SINGLETON START
+// /////////////////////// SINGLETON START
 
 object EmokisSingleton {
 
@@ -173,15 +169,15 @@ object EmokisSingleton {
         owner?.let {
             ViewModelProvider(
                 it,
-                DataViewModel.DataViewModelFactory()
+                DataViewModel.DataViewModelFactory(),
             ).get(DataViewModel::class.java)
         }
     }
 }
 
-///////////////////////// SINGLETON END
+// /////////////////////// SINGLETON END
 
-///////////////////////// VIEWMODEL START
+// /////////////////////// VIEWMODEL START
 
 class DataViewModel : ViewModel() {
 
@@ -198,13 +194,11 @@ class DataViewModel : ViewModel() {
             return DataViewModel() as T
         }
     }
-
 }
 
-///////////////////////// VIEWMODEL END
+// /////////////////////// VIEWMODEL END
 
-
-///////////////////////// ADAPTER START
+// /////////////////////// ADAPTER START
 typealias EmokiClickListener = (Emoki) -> Unit
 
 class EmokiAdapter(private val onClickItem: EmokiClickListener) :
@@ -215,20 +209,26 @@ class EmokiAdapter(private val onClickItem: EmokiClickListener) :
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
         val inflated = parent.inflateFrom()
         return ViewHolder(inflated, onClickItem)
     }
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int
+    ) {
         holder.bind(data[position])
     }
 
     class ViewHolder(
         private val binding: ItemEmokiBinding,
-        private val emokiClickListener: EmokiClickListener
+        private val emokiClickListener: EmokiClickListener,
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(emoki: Emoki) = with(binding) {
@@ -238,15 +238,15 @@ class EmokiAdapter(private val onClickItem: EmokiClickListener) :
     }
 }
 
-///////////////////////// ADAPTER END
+// /////////////////////// ADAPTER END
 
-///////////////////////// DATA CLASS START
+// /////////////////////// DATA CLASS START
 
 data class Emoki(val emoki: String)
 
-///////////////////////// DATA CLASS END
+// /////////////////////// DATA CLASS END
 
-///////////////////////// EXTENSION FUNCTIONS START
+// /////////////////////// EXTENSION FUNCTIONS START
 
 inline fun <reified T> FragmentActivity.launchActivity(block: Intent.() -> Unit = {}) {
     val intent = Intent(this, T::class.java)
@@ -258,22 +258,18 @@ inline fun <reified T> FragmentActivity.launchActivity(block: Intent.() -> Unit 
  *
  * @return [ItemEmokiBinding]
  */
-fun ViewGroup.inflateFrom(): ItemEmokiBinding =
-    ItemEmokiBinding.inflate(LayoutInflater.from(this.context))
+fun ViewGroup.inflateFrom(): ItemEmokiBinding = ItemEmokiBinding.inflate(LayoutInflater.from(this.context))
 
 private fun ViewBinding.kill() {
-
 }
 
-///////////////////////// EXTENSION FUNCTIONS END
+// /////////////////////// EXTENSION FUNCTIONS END
 
-///////////////////////// DEPENDENCY INYECTION START
-
+// /////////////////////// DEPENDENCY INYECTION START
 
 class ElContenedor {
 
     val dependenkies = mutableMapOf<String, Any>()
-
 }
 
 class Inllector private constructor() {
@@ -297,12 +293,10 @@ class Inllector private constructor() {
             inllektor.elContenedor.dependenkies[dek::class.java.simpleName] = dek
         }
     }
-
 }
 
 private val inllektor = Inllector.inllektorOf(EmokisSingleton, Emoki("🙄"), "Chuby")
 val FragmentActivity.injektor: Inllector
     get() = inllektor
 
-///////////////////////// DEPENDENCY INYECTION END
-
+// /////////////////////// DEPENDENCY INYECTION END
