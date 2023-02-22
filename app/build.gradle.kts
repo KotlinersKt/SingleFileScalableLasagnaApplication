@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kotliners.appkt"
+    namespace = "com.kotliners.emokisapp"
     compileSdk = 33
 
     defaultConfig {
