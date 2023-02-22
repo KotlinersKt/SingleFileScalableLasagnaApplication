@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
+    namespace = "com.kotliners.appkt"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.kotliners.appkt"
         minSdk = 23
         targetSdk = 33
         versionCode = 1
@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
